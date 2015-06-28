@@ -11,11 +11,9 @@ using namespace std;
 // todo only request write permisiions when need to write
 struct Table {
     string name;
-    Table* next;
     std::vector<string> attributes;
     Table(string& iname) {
         name = iname;
-        next = NULL;
     }
 };
 struct Database {
@@ -23,6 +21,7 @@ struct Database {
     Database* next;
     Table* tableFirst;
     Table* tableLast;
+    std::vector<Table*> tables;
     int tbCount;
     Database(string& iname) {
         name = iname;
@@ -39,6 +38,8 @@ class DB
 private:
     Database* dbFirst;
     Database* dbLast;
+    
+    std::vector<Database*> databases;
     
     int dbCount;
     regex rxFinddb,rxFindtb,rxFindattr;

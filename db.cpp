@@ -117,7 +117,7 @@ const char* DB::splitstr(char* str, const char* delimiter)
     while (pch != NULL) {
         printf("%s\n", pch);
         //        res[i] = pch;
-        strcpy(res[i], pch);
+//        strcpy(res[i], pch);
         pch = strtok(NULL, delimiter);
         i++;
     }
@@ -131,18 +131,9 @@ Database* DB::insertDb(string& name)
 
     assert(newDB != NULL); // If unable to allocate memory,
     // terminate the program
-
-    if (dbFirst == NULL) { // if the list is empty, newNode is
-                           // both the first and last node
-        dbFirst = newDB;
-        dbLast = newDB;
-        dbCount++; // increment count
-    } else {       // the list is not empty, insert newNode after last
-
-        dbLast->next = newDB; // insert newNode after last
-        dbLast = newDB;       // make last point to the actual last node
-        dbCount++;            // increment count
-    }
+    
+    databases.push_back(newDB);
+    dbCount++;
     return newDB;
 }
 Table* DB::insertTable(Database*& thisDb, string& name)
@@ -153,45 +144,32 @@ Table* DB::insertTable(Database*& thisDb, string& name)
     //
     assert(newTable != NULL);         // If unable to allocate memory,
                                       // terminate the program
-    if (thisDb->tableFirst == NULL) { // if the list is empty, newNode is
-                                      //                                      // both the first and last node
-        thisDb->tableFirst = newTable;
-        thisDb->tableLast = newTable;
-        thisDb->tbCount++; // increment count
-
-    } else { // the list is not empty, insert newNode after last
-
-        thisDb->tableLast->next = newTable; // insert newNode after last
-        thisDb->tableLast = newTable;       // make last point to the actual last node
-        thisDb->tbCount++;                  // increment count
-    }
+    thisDb->tables.push_back(newTable);
+    thisDb->tbCount++;
     return newTable;
 }
 void DB::printDBs()
 {
     // print
-    Database* current; // pointer to traverse the list
+//    Database* current; // pointer to traverse the list
 
-    current = dbFirst; // set current so that it points to
-    // the first node
-    while (current != NULL) // while more data to print
-    {
-        cout << "DB: " << current->name << endl;
-        printDBTables(current);
-        current = current->next;
+    int i = 0; // index 
+    while(i < databases.size()){
+        cout << " DBV: " << databases[i]->name << endl;
+        printDBTables(databases[i]);
+        i++;
     }
+    
 }
 void DB::printDBTables(Database*& db)
 {
     // print
     Table* current; // pointer to traverse the list
-
-    current = db->tableFirst; // set current so that it points to
-    // the first node
-    while (current != NULL) // while more data to print
-    {
-        cout << "  Table: " << current->name << endl;
-        current = current->next;
+    int i = 0; // index 
+    while(i < db->tables.size()){
+        i;
+        cout << " Table: " << db->tables[i]->name << endl;
+        i++;
     }
 }
 void DB::initRegex()
