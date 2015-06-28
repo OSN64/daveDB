@@ -1,11 +1,11 @@
 # start db testdb
 # start table people 
-# id name age place
+# attr id name age place
 1 dave 12 goal
 2 lel 24 road
 # end table people 
 # start table building 
-id number lot section
+# attr id number lot section
 1 3 65 it
 2 56 23 marketing
 # end table building 
