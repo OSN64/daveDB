@@ -56,13 +56,14 @@ private:
     void delDbs();
     void readDb(char* dbMemMap, size_t size); // read database and parse to data structure
 
-    bool parseTypeLine(string, Database*&, Table*&); // parse type line eg # start db test
-    bool parseDataLine(string, Table*&);             // parse data line eg 1 lel el
+    bool parseTypeLine(string&, Database*&, Table*&); // parse type line eg # start db test
+    bool parseDataLine(string&, Table*&);             // parse data line eg 1 lel el
 
     vector<string> splitstr(char*, const char*); // split string given delimeter
 
     Database* insertDb(string&);             // create database with name
     Table* insertTable(Database*&, string&); // create table in database with name
+    bool insertTableAttr(Table*&, string&); // sets attributes in table
 
     Database* findDb(string&);             // find database in databases with name
     Table* findTable(Database*&, string&); // find table in give database with name
@@ -76,6 +77,7 @@ private:
 public:
     DB(char* dbMemMap, size_t size);
     ~DB();
+    bool insert(string&, string&, string&);
     void printDBs();
 };
 

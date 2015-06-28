@@ -5,6 +5,15 @@ DB::DB(char* dbMemMap, size_t size)
     dbCount = 0;
     initRegex();
     readDb(dbMemMap, size);
+    //
+    string insDB = "The_Boss";
+    string insTb = "RON";
+    string insAttr = "id class direction";
+    string insVals = "1 back right";
+    Database* DB = insertDb(insDB);
+    Table* tb = insertTable(DB,insTb);
+    insertTableAttr(tb,insAttr);
+    insert(insDB, insTb, insVals);
     printDBs();
 }
 
@@ -75,7 +84,7 @@ void DB::readDb(char* dbMemMap, size_t size)
     }
 }
 
-bool DB::parseTypeLine(string line, Database*& currDb, Table*& currTb)
+bool DB::parseTypeLine(string& line, Database*& currDb, Table*& currTb)
 {
     regex rxFinddb("(#)( )((?:[a-z][a-z0-9_]*))( )(db)( )((?:[a-z][a-z0-9_]*))", regex_constants::ECMAScript);
     regex rxFindtb("(#)( )((?:[a-z][a-z0-9_]*))( )(table)( )((?:[a-z][a-z0-9_]*))", regex_constants::ECMAScript);
@@ -115,7 +124,7 @@ bool DB::parseTypeLine(string line, Database*& currDb, Table*& currTb)
 
     return true;
 }
-bool DB::parseDataLine(string line, Table*& currTb)
+bool DB::parseDataLine(string& line, Table*& currTb)
 {
     std::vector<string> dataRow = splitstr(&line[0], DELIMITER.c_str());
     currTb->rows.push_back(dataRow);
@@ -123,7 +132,6 @@ bool DB::parseDataLine(string line, Table*& currTb)
 }
 vector<string> DB::splitstr(char* str, const char* delimiter)
 {
-    //    string res[MAX_ATTR_COUNT];
     std::vector<string> res;
     char* pch;
     pch = strtok(str, delimiter);
@@ -163,6 +171,11 @@ Table* DB::insertTable(Database*& thisDb, string& name)
     thisDb->tbCount++;
     return newTable;
 }
+bool DB::insertTableAttr(Table*& table, string& attr)
+{
+    table->attributes = splitstr(&attr[0], DELIMITER.c_str()); // change this ,, looks weird
+    return true;
+}
 Table* DB::findTable(Database*& thisDb, string& name)
 {
     Table* current = nullptr; // pointer to current table
@@ -188,6 +201,15 @@ Database* DB::findDb(string& name)
         i++;
     }
     return current;
+}
+bool DB::insert(string& isDB, string& isTb, string& isVals)
+{
+    Database* DB = findDb(isDB);
+    if(DB == 0) return false;
+    Table* table = findTable(DB, isTb);
+    if(table == 0) return false;
+    parseDataLine(isVals, table);
+    return true;
 }
 void DB::printDBs()
 {
