@@ -20,9 +20,13 @@ Davedb::~Davedb()
 }
 void Davedb::init()
 {
+    // dbFd = openDBfile("asd.asd.davedb")
     int fd = openDBfile();
-    mmappedData = memmap(fd);
-    size_t size = getFilesize(dbFd);
+    size_t size = getFilesize(fd);
+    if(size <= 0)
+      exit(33);
+
+    mmappedData = memmap(fd);    
     db = new DB(mmappedData, size);
 }
 int Davedb::openDBfile()

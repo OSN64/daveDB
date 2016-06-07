@@ -5,8 +5,8 @@ int main(int argc, char** argv)
 {
     string dbName = "test.davedb";
     Davedb db(dbName);
-
-    db.printDBs();
+     
+    //db.printDBs();
     
 //    string dbname = "testdb";
 //    string tb = "pin";
@@ -29,5 +29,5 @@ int main(int argc, char** argv)
 //    map[i] = to;
 //    cout << "changed: " << map[i] << endl;
 
-    return 0;
+//    return 0;
 }
